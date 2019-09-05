@@ -10,4 +10,11 @@ class Process
             \cli_set_process_title($title);
         }
     }
+
+    public static function restart()
+    {
+        $env = $_SERVER;
+        unset($env['argv'], $env['argc']);
+        \pcntl_exec($env['_'], $_SERVER['argv'], $env);
+    }
 }
