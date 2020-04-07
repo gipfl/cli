@@ -27,14 +27,15 @@ class Process
     {
         // _ is only available when executed via shell
         $binary = static::getEnv('_');
+        $argv = $_SERVER['argv'];
         if (\strlen($binary) === 0) {
-            $argv = $_SERVER['argv'];
-
             // Problem: this doesn't work if we changed working directory and
             // called the binary with a relative path. Something that doesn't
             // happen when started as a daemon, and when started manually we
             // should have $_ from our shell.
             $binary = static::absoluteFilename(\array_shift($argv));
+        } else {
+            \array_shift($argv);
         }
         \pcntl_exec($binary, $argv, static::getEnv());
     }
