@@ -47,6 +47,11 @@ echo Screen::instance()->colorize('OK', 'green') . ": everything is fine!\n"'
 Changes
 -------
 
+### v0.3.0
+
+* Process: fix restart when started from a shell
+* Introduce Spinner
+
 ### v0.2.0
 
 * Process::restart() and related helper methods
