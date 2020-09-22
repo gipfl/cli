@@ -21,6 +21,8 @@
         "php": ">=5.6.0",
         "ext-mbstring": "*",
         "ext-pcntl": "*",
-        "ext-posix": "*"
+        "ext-posix": "*",
+        "react/stream": "^1.1",
+        "react/promise": "^2"
     }
 }
