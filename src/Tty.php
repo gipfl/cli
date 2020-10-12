@@ -50,6 +50,13 @@ class Tty
             );
         }
         $this->echo = $echo;
+        if ($this->ttyMode) {
+            if ($echo) {
+                $this->ttyMode->enableFeature('echo');
+            } else {
+                $this->ttyMode->disableFeature('echo');
+            }
+        }
 
         return $this;
     }
@@ -101,7 +108,7 @@ class Tty
     protected function initialize()
     {
         $this->ttyMode = new TtyMode();
-        $this->ttyMode->setPreferredMode();
+        $this->ttyMode->setPreferredMode($this->echo);
     }
 
     public static function isSupported()

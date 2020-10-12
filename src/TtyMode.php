@@ -11,20 +11,16 @@ class TtyMode
 {
     protected $originalMode;
 
-    public function preserve($force = false)
+    public function enableCanonicalMode()
     {
-        if ($force || $this->originalMode === null) {
-            $this->originalMode = $this->getCurrentMode();
-            register_shutdown_function([$this, 'restore']);
-        }
+        $this->enableFeature('icanon');
 
         return $this;
     }
 
-    public function setPreferredMode()
+    public function disableCanonicalMode()
     {
-        $this->preserve();
-        $this->disableFeature('icanon', 'echo');
+        $this->disableFeature('icanon');
 
         return $this;
     }
@@ -51,9 +47,39 @@ class TtyMode
         shell_exec($cmd);
     }
 
-    protected function getCurrentMode()
+    public function getCurrentMode()
     {
         return rtrim(shell_exec('stty -g'), PHP_EOL);
+    }
+
+    /**
+     * Helper allowing to call stty only once for the mose used flags, icanon and echo
+     * @param bool $echo
+     * @return $this
+     */
+    public function setPreferredMode($echo = true)
+    {
+        $this->preserve();
+        if ($echo) {
+            $this->disableFeature('icanon');
+        } else {
+            $this->disableFeature('icanon', 'echo');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function preserve($force = false)
+    {
+        if ($force || $this->originalMode === null) {
+            $this->originalMode = $this->getCurrentMode();
+            register_shutdown_function([$this, 'restore']);
+        }
+
+        return $this;
     }
 
     /**
