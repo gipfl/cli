@@ -66,7 +66,7 @@ class Tty
 
     protected function hasStdin()
     {
-        return !defined('STDIN') || !is_resource(STDIN) || fstat(STDIN) === false;
+        return defined('STDIN') && is_resource(STDIN) && fstat(STDIN) !== false;
     }
 
     protected function assertValidStdin()
@@ -88,7 +88,7 @@ class Tty
 
     protected function hasStdout()
     {
-        return !defined('STDOUT') || !is_resource(STDOUT) || fstat(STDOUT) === false;
+        return defined('STDOUT') && is_resource(STDOUT) && fstat(STDOUT) !== false;
     }
 
     protected function assertValidStdout()
