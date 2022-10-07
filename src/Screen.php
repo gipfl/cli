@@ -27,6 +27,9 @@ class Screen
      */
     public static function factory()
     {
+        if (! defined('STDOUT')) {
+            return new Screen();
+        }
         if (\function_exists('posix_isatty') && \posix_isatty(STDOUT)) {
             return new AnsiScreen();
         } else {
@@ -168,13 +171,13 @@ class Screen
             // null should equal 0 here, however seems to equal '' on some systems:
             $current = \setlocale(LC_ALL, 0);
 
-            $parts = \preg_split('/;/', $current);
+            $parts = explode(';', $current);
             $lc_parts = [];
             foreach ($parts as $part) {
                 if (\strpos($part, '=') === false) {
                     continue;
                 }
-                list($key, $val) = \preg_split('/=/', $part, 2);
+                list($key, $val) = explode('=', $part, 2);
                 $lc_parts[$key] = $val;
             }
 
