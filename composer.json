@@ -23,7 +23,7 @@
         "ext-pcntl": "*",
         "ext-posix": "*",
         "react/stream": ">=1.1",
-        "react/promise": "^2"
+        "react/promise": "^2|^3"
     },
     "require-dev": {
         "react/child-process": ">=0.6"

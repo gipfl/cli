@@ -4,7 +4,7 @@ namespace gipfl\Cli;
 
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
-use React\Promise\ExtendedPromiseInterface;
+use React\Promise\PromiseInterface;
 
 class Spinner
 {
@@ -48,7 +48,7 @@ class Spinner
         return $this->frames[$this->frame];
     }
 
-    public function spinWhile(ExtendedPromiseInterface $promise, callable $renderer)
+    public function spinWhile(PromiseInterface $promise, callable $renderer)
     {
         $next = function () use ($renderer) {
             $renderer($this->getNextFrame());
@@ -62,7 +62,7 @@ class Spinner
         $cancel = function () use ($wait) {
             $wait->cancel();
         };
-        $promise->otherwise($cancel)->then($cancel);
+        $promise->then($cancel, $cancel);
 
         return $promise;
     }
